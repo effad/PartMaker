@@ -33,3 +33,4 @@ app/bin/
 app/.settings/
 .classpath
 .project
+.settings/
