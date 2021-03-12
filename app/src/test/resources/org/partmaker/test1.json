@@ -1,0 +1,6 @@
+{
+	"name": "TestPart#1",
+	"description": "This part is used for regression tests.",
+	"authors": [ "Alice", "Bob" ],
+	"scriptFile": "test1.groovy"
+}		
