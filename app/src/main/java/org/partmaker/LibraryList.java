@@ -1,6 +1,9 @@
 package org.partmaker;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -14,13 +17,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-/** LibraryList displays the list of .zip - Files read from the directory set by its directory property.
+/** LibraryList displays the list of parts read from the directory set by its directory property.
  * @author Robert Lichtenberger
  */
 public class LibraryList {
 	
 	private ObjectProperty<File> directory = new SimpleObjectProperty<>(null);
-	private ListView<File> listView = new ListView<>();
+	private ListView<PartDescriptor> listView = new ListView<>();
 	private ListLoaderService listLoaderService = new ListLoaderService();
 	
 	LibraryList() {
@@ -45,7 +48,7 @@ public class LibraryList {
 		}
 	}
 	
-	private class ListLoaderService extends Service<File[]> {
+	static class ListLoaderService extends Service<List<PartDescriptor>> {
 		private File parentDir;
 		
 		void load(File parentDir) {
@@ -54,28 +57,32 @@ public class LibraryList {
 		}
 
 		@Override
-		protected Task<File[]> createTask() {
-			return new Task<File[]>() {
+		protected Task<List<PartDescriptor>> createTask() {
+			return new Task<List<PartDescriptor>>() {
 				@Override
-				protected File[] call() throws Exception {
-					return parentDir.listFiles(File::isDirectory);
+				protected List<PartDescriptor> call() throws Exception {
+					return Arrays.stream(parentDir.listFiles(File::isDirectory))
+						.map(dir -> PartDescriptor.readFrom(new File(dir, "partmaker.json")))
+						.collect(Collectors.toList())
+					;
 				}
 			};
 		}
 	}
 	
 	private void libraryLoaded(WorkerStateEvent event) {
-		File[] subDirectories = (File[]) event.getSource().getValue();
-		if (subDirectories != null) {
-			listView.getItems().setAll(subDirectories);
+		@SuppressWarnings("unchecked")
+		List<PartDescriptor> parts = (List<PartDescriptor>) event.getSource().getValue();
+		if (parts != null) {
+			listView.getItems().setAll(parts);
 		} else {
 			listView.getItems().clear();
 		}		
 	}
 	
-	private static class PartCell extends ListCell<File> {
+	private static class PartCell extends ListCell<PartDescriptor> {
 		@Override
-		protected void updateItem(File item, boolean empty) {
+		protected void updateItem(PartDescriptor item, boolean empty) {
 			super.updateItem(item, empty);
             if (item == null) {
             	setText(null);

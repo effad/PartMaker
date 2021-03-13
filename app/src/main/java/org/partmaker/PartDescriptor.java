@@ -26,7 +26,8 @@ public class PartDescriptor {
 	/** Create invalid part descriptor
 	 * @param exception The exception that occurred when reading. 
 	 */
-	private PartDescriptor(IOException exception) {
+	private PartDescriptor(String name, IOException exception) {
+		this.name = name;
 		this.exception = exception;
 	}
 
@@ -41,7 +42,7 @@ public class PartDescriptor {
 		try {
 			pd = mapper.readValue(file, PartDescriptor.class);
 		} catch (IOException e) {
-			pd = new PartDescriptor(e);
+			pd = new PartDescriptor(file.getParentFile().getName(), e);
 		}
 		return pd;
 	}

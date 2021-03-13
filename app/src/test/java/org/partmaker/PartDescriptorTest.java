@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 /** PartDescriptorTest tests reading PartDescriptor objects from JSON files.
  * @author Robert Lichtenberger
  */
-public class PartDescriptorTest {
+public class PartDescriptorTest extends TestBase {
 
 	@Test
 	public void testRead() {
