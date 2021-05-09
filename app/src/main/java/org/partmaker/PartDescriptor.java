@@ -2,6 +2,7 @@ package org.partmaker;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.InjectableValues;
@@ -28,7 +29,10 @@ public class PartDescriptor {
 	 */
 	private PartDescriptor(String name, IOException exception) {
 		this.name = name;
+		this.description = exception.getMessage();
 		this.exception = exception;
+		this.authors = new ArrayList<>();
+		this.scriptFile = new File("");
 	}
 
 	/** Read part descriptor from .json file.

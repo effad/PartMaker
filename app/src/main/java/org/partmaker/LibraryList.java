@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
@@ -39,6 +40,10 @@ public class LibraryList {
 	
 	public ObjectProperty<File> directoryProperty() {
 		return directory;
+	}
+	
+	public ReadOnlyObjectProperty<PartDescriptor> partProperty() {
+		return listView.getSelectionModel().selectedItemProperty();
 	}
 	
 	private void loadLibrary(ObservableValue<? extends File> observable, File oldValue, File newValue) {

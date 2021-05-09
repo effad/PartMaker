@@ -1,0 +1,6 @@
+{
+	"name": "Rectangle",
+	"description": "Rectangle creates a single rectangle, defined by width and height",
+	"authors": [ "Robert Lichtenberger" ],
+	"scriptFile": "rectangle.groovy"
+}		

@@ -1,6 +1,7 @@
 package org.partmaker;
 
 import java.io.File;
+import java.util.prefs.Preferences;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -23,6 +24,13 @@ public class LibraryChooser {
 	private ReadOnlyObjectWrapper<File> directory = new ReadOnlyObjectWrapper<>();
 	private StringBinding labelBinding = Bindings.createStringBinding(this::createLabel, directory); 
 	
+
+	LibraryChooser() {
+		Preferences prefs = Preferences.userNodeForPackage(getClass());
+		directory.set(new File(prefs.get("directory", "")));
+	}
+
+	
 	public Region createPresentation() {
 		HBox chooser = new HBox();
 		Label label = new Label();		
@@ -43,10 +51,14 @@ public class LibraryChooser {
 	private void buttonClicked(ActionEvent event) {
 		DirectoryChooser dlg = new DirectoryChooser();
 		dlg.setTitle("Open Part Library");
-		dlg.setInitialDirectory(getDirectory());
+		if (getDirectory().isDirectory()) {
+			dlg.setInitialDirectory(getDirectory());
+		}
 		File dir = dlg.showDialog(PartMaker.mainStage);
 		if (dir != null) {
 			directory.set(dir);
+			Preferences prefs = Preferences.userNodeForPackage(getClass());
+			prefs.put("directory", dir.getAbsolutePath());
 		}
 	}
 	

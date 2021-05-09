@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -16,12 +15,14 @@ public class PartMaker extends Application {
 	
 	private LibraryChooser libraryChooser = new LibraryChooser();
 	private LibraryList libraryList = new LibraryList();
+	private PartDisplay partDisplay = new PartDisplay();
 
 	@Override
 	public void start(Stage stage) {
 		mainStage = stage;
 		Scene scene = new Scene(createPresentation(), 1280, 1024);
 		libraryList.directoryProperty().bind(libraryChooser.directoryProperty());
+		partDisplay.partProperty().bind(libraryList.partProperty());
 		stage.setScene(scene);
 		stage.show();
 	}
@@ -40,7 +41,7 @@ public class PartMaker extends Application {
 	}
 	
 	private Node createPreview() {
-		return new Label("TODODODOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+		return partDisplay.createPresentation();
 	}
 
 	public static void main(String[] args) {

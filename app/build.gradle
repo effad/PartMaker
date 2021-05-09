@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.2'
     implementation 'commons-io:commons-io:2.8.0'
+    implementation 'org.codehaus.groovy:groovy:3.0.7'
 }
 
 application {
