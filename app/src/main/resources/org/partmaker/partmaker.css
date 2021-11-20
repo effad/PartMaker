@@ -1,0 +1,13 @@
+@font-face {
+	font-family: 'Roboto';
+	src: url('Roboto-Regular.ttf');
+}
+
+.root {
+	-fx-font-family: 'Roboto';
+	-fx-font-size: 14;
+}
+
+.org.partmaker.PartDisplay {
+	-fx-font-size: 40;
+}

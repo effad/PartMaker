@@ -19,14 +19,14 @@ public class PartDisplay {
 	
 	private ObjectProperty<PartDescriptor> part = new SimpleObjectProperty<>(null);
 	
-	private VBox outer = new VBox();
-	private Label nameLabel = new Label();
-	private Label descriptionLabel = new Label();
-	private Label authorsLabel = new Label();
-	private Label exceptionLabel = new Label();
+	private VBox outer = Style.createVBox(this, "outer");
+	private Label nameLabel = Style.createLabel(this, "name");
+	private Label descriptionLabel = Style.createLabel(this, "description");
+	private Label authorsLabel = Style.createLabel(this, "authors");
+	private Label exceptionLabel = Style.createLabel(this, "exception");
 	
 	PartDisplay() {
-		partProperty().addListener(this::loadPart);
+		partProperty().addListener(this::loadPart);		
 	}
 	
 	public ObjectProperty<PartDescriptor> partProperty() {
