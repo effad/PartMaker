@@ -3,6 +3,8 @@ package org.partmaker;
 import java.lang.reflect.Constructor;
 import java.util.stream.Collectors;
 
+import org.partmaker.scriptparams.Parameters;
+
 import groovy.lang.GroovyClassLoader;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -53,8 +55,9 @@ public class PartDisplay {
 			Class<?> scriptClass = loader.parseClass(part.getScriptFile());
 			Constructor<?> constructor = scriptClass.getConstructor(new Class[] {});
 		    Object scriptInstance = constructor.newInstance() ;
-		    // TODO use annotations...
-			scriptClass.getDeclaredMethod( "defineParameters", new Class[] {} ).invoke( scriptInstance, new Object[] {} ) ;			
+		    Parameters parameters = new Parameters();
+			scriptClass.getDeclaredMethod("defineParameters", Parameters.class).invoke(scriptInstance, parameters);
+			System.out.println("Params: " + parameters.getParameters());
 		} catch (Exception e) {
 			exceptionLabel.setText(e.toString());
 		}

@@ -32,6 +32,7 @@ public class PartMaker extends Application {
 		SplitPane outer = new SplitPane();
 		outer.setOrientation(Orientation.HORIZONTAL);
 		outer.getItems().addAll(createLibrary(), createPreview());
+		outer.setDividerPositions(0.3, 0.7);
 		return outer;
 	}
 

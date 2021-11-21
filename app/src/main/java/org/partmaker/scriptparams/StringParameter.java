@@ -7,7 +7,7 @@ public class StringParameter extends ParameterBase<StringParameter> {
 	
 	public final static int UNLIMITED = -1;
 	
-	int maxLength = UNLIMITED;
+	private int maxLength = UNLIMITED;
 
 	public StringParameter(String name) {
 		super(name);

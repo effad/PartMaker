@@ -1,13 +1,13 @@
 package org.partmaker.scriptparams;
 
-/** IntegerParamater represents integer numbers (in the mathematical sense). A long value is used internally.
+/** IntegerParameter represents integer numbers (in the mathematical sense). A long value is used internally.
  * @author Robert Lichtenberger
  *
  */
 public class IntegerParameter extends ParameterBase<IntegerParameter> {
 
-	long min = Long.MIN_VALUE;
-	long max = Long.MAX_VALUE;
+	private long min = Long.MIN_VALUE;
+	private long max = Long.MAX_VALUE;
 	
 	public IntegerParameter(String name) {
 		super(name);
