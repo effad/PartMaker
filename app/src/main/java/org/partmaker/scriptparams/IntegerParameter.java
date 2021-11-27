@@ -48,6 +48,10 @@ public class IntegerParameter extends ParameterBase<IntegerParameter, Long> {
 		return min;
 	}
 
+	public IntegerParameter defaultValue(Integer defaultValue) {
+		return defaultValue(defaultValue.longValue());
+	}
+	
 	@Override
 	public Node getInputControl() {
 		return inputControl;
@@ -60,6 +64,15 @@ public class IntegerParameter extends ParameterBase<IntegerParameter, Long> {
 			value = convertToLong();
 		} catch (NumberFormatException e) { } // should not happen
 		return value;
+	}
+	
+	@Override
+	public void loadValue(Long value) {
+		inputControl.setText("" + value);
+	}
+
+	public void loadValue(Integer value) {
+		inputControl.setText("" + value);
 	}
 
 	private Long convertToLong() {

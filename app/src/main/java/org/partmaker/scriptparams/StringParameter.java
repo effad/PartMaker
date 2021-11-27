@@ -40,6 +40,11 @@ public class StringParameter extends ParameterBase<StringParameter, String> {
 	public String getValue() {
 		return inputControl.getText();
 	}
+	
+	@Override
+	public void loadValue(String value) {
+		inputControl.setText(value);
+	}
 
 	@Override
 	protected void checkValidValue(Context c) {

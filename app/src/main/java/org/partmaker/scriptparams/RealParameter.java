@@ -53,6 +53,11 @@ public class RealParameter extends ParameterBase<RealParameter, Double> {
 		} catch (NumberFormatException e) { }
 		return value;
 	}
+	
+	@Override
+	public void loadValue(Double value) {
+		inputControl.setText("" + value);
+	}
 
 	private Double convertToDouble() {
 		Double value;

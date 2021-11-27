@@ -13,6 +13,7 @@ import net.synedra.validatorfx.Check.Context;
 public class ParameterBaseTest {
 
 	static class HobbitParameter extends ParameterBase<HobbitParameter, String> {
+		String value;
 		public HobbitParameter(String name) {
 			super(name);
 		}
@@ -24,7 +25,11 @@ public class ParameterBaseTest {
 
 		@Override
 		public String getValue() {
-			return null;
+			return value;
+		}
+		
+		public void loadValue(String value) {
+			this.value = value; 
 		}
 
 		@Override
@@ -44,5 +49,12 @@ public class ParameterBaseTest {
 		Assertions.assertFalse(h.isRequired());
 		h = h.required();		
 		Assertions.assertTrue(h.isRequired());
+	}
+	
+	@Test
+	public void testLoadAndGet() {
+		HobbitParameter h = new HobbitParameter("Pippin");
+		h.loadValue("Pipeweed");
+		Assertions.assertEquals(h.getValue(), "Pipeweed");		
 	}
 }

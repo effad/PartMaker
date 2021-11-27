@@ -41,4 +41,12 @@ public class RealParameterTest {
 		input.setText("12.345");
 		Assertions.assertEquals(r.getValue(), 12.345);
 	}
+	
+	@Test
+	public void testLoadAndGet() {
+		RealParameter r = new RealParameter("Butter");
+		r.loadValue(47.11);
+		Assertions.assertEquals(r.getValue(), 47.11);		
+	}
+	
 }

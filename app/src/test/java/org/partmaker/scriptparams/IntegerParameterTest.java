@@ -45,4 +45,12 @@ public class IntegerParameterTest extends TestBase {
 		input.setText("12345");
 		Assertions.assertEquals(i.getValue(), 12345L);
 	}
+	
+	@Test
+	public void testLoadAndGet() {
+		IntegerParameter i = new IntegerParameter("Orcs");
+		i.loadValue(10000L);
+		Assertions.assertEquals(i.getValue(), 10000);		
+	}
+	
 }

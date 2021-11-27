@@ -17,6 +17,7 @@ public abstract class ParameterBase<T extends ParameterBase<?, ?>, V> {
 	
 	private String name;
 	private boolean required;
+	private V defaultValue;
 	
 	// Must be bound by subclasses
 	protected SimpleBooleanProperty emptyProperty = new SimpleBooleanProperty(true);
@@ -29,6 +30,7 @@ public abstract class ParameterBase<T extends ParameterBase<?, ?>, V> {
 	public abstract Node getInputControl();
 	public abstract V getValue();
 	protected abstract void checkValidValue(Context c);
+	public abstract void loadValue(V value);
 	
 	public String getName() {
 		return name;
@@ -47,6 +49,23 @@ public abstract class ParameterBase<T extends ParameterBase<?, ?>, V> {
 	public boolean isEmpty() {
 		return emptyProperty.get();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public T defaultValue(V defaultValue) {
+		this.defaultValue = defaultValue;
+		return (T) this;
+	}
+	
+	public V getDefaultValue() {
+		return defaultValue;
+	}
+	
+	public void loadDefaultValue() {
+		if (defaultValue != null) {
+			loadValue(defaultValue);
+		}
+	}
+	
 	
 	public void setValidation(Validator validator) {
 		Check check = validator.createCheck()

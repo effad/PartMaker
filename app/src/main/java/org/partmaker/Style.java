@@ -9,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -49,6 +50,10 @@ public class Style {
 	
 	public static TabPane createTabPane(Object parent, String id) {
 		return prepare(TabPane::new, parent, id);
+	}
+	
+	public static TextArea createTextArea(Object parent, String id) {
+		return prepare(TextArea::new, parent, id);
 	}
 	
 	public static ToolBar createToolbar(Object parent, String id) {

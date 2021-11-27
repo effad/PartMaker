@@ -40,4 +40,11 @@ public class StringParameterTest {
 		input.setText("Aragorn");
 		Assertions.assertEquals(s.getValue(), "Aragorn");
 	}
+	
+	@Test
+	public void testLoadAndGet() {
+		StringParameter s = new StringParameter("Dunedain");
+		s.loadValue("Aragorn");
+		Assertions.assertEquals(s.getValue(), "Aragorn");		
+	}	
 }

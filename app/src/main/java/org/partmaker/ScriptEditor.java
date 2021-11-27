@@ -89,6 +89,7 @@ public class ScriptEditor {
 	
 	private SimpleObjectProperty<File> fileProperty = new SimpleObjectProperty<>(null);
 	private SimpleBooleanProperty dirty = new SimpleBooleanProperty(false);
+	private SimpleBooleanProperty saved = new SimpleBooleanProperty(false);
 		
 	public ScriptEditor() {
 		outer = Style.createVBox(this, "outer");
@@ -133,15 +134,21 @@ public class ScriptEditor {
 		return dirty;
 	}
 	
+	public ObservableBooleanValue savedProperty() {
+		return saved;
+	}
+	
 	public void load(File file) {
 		fileProperty.set(file);
 		if (file == null) {
 			codeArea.replaceText("");
 		} else {
-			try {
-				codeArea.replaceText(FileUtils.readFileToString(file, StandardCharsets.UTF_8));
-			} catch (IOException e) {
-				codeArea.replaceText(e.getMessage());
+			if (file.exists()) {
+				try {
+					codeArea.replaceText(FileUtils.readFileToString(file, StandardCharsets.UTF_8));
+				} catch (IOException e) {
+					codeArea.replaceText(e.getMessage());
+				}
 			}
 		}
 		dirty.set(false);
@@ -151,6 +158,8 @@ public class ScriptEditor {
 		try {
 			FileUtils.writeStringToFile(fileProperty.get(), codeArea.getText(), StandardCharsets.UTF_8);
 			dirty.set(false);
+			saved.set(true);
+			saved.set(false);
 		} catch (IOException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error saving file");

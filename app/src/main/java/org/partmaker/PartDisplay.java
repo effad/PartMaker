@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Constructor;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.partmaker.scriptparams.ParameterBase;
 import org.partmaker.scriptparams.Parameters;
 
@@ -13,6 +14,7 @@ import com.jsevy.jdxf.DXFDocument;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyShell;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -21,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -35,13 +38,13 @@ import net.synedra.validatorfx.Validator;
  */
 public class PartDisplay {
 	
-	private ObjectProperty<PartDescriptor> part = new SimpleObjectProperty<>(null);
+	private ObjectProperty<PartDescriptor> partProperty = new SimpleObjectProperty<>(null);
 	
 	private VBox outer = Style.createVBox(this, "outer");
 	private Label nameLabel = Style.createLabel(this, "name");
 	private Label descriptionLabel = Style.createLabel(this, "description");
 	private Label authorsLabel = Style.createLabel(this, "authors");
-	private Label exceptionLabel = Style.createLabel(this, "exception");
+	private TextArea exceptionLabel = Style.createTextArea(this, "exception");
 	private TabPane tabPane = Style.createTabPane(this, "tab");
 	private GridPane parameterGrid = Style.createGridPane(this, "parameters");
 
@@ -49,24 +52,28 @@ public class PartDisplay {
 	private FileChooser fileChooser = new FileChooser();
 	
 	PartDisplay() {
-		partProperty().addListener(this::loadPart);
+		partProperty().addListener((observable, oldValue, newValue) -> loadPart());
+		scriptEditor.savedProperty().addListener((observable, oldValue, newValue) -> loadPart()); 
 		fileChooser.getExtensionFilters().setAll(new ExtensionFilter("DXF Files", "*.dxf"));
 	}
 	
 	public ObjectProperty<PartDescriptor> partProperty() {
-		return part;
+		return partProperty;
 	}
 	
 	public Region createPresentation() {
 		Tab sourceTab = new Tab("Source", scriptEditor.getEditor());
 		sourceTab.textProperty().bind(Bindings.when(scriptEditor.dirtyProperty()).then("Source *").otherwise("Source"));
-		tabPane.getTabs().addAll(new Tab("Execute", parameterGrid), sourceTab); 
+		tabPane.getTabs().addAll(new Tab("Execute", parameterGrid), sourceTab);
 		VBox.setVgrow(tabPane, Priority.ALWAYS);
+		exceptionLabel.setEditable(false);
+		VBox.setVgrow(tabPane, Priority.SOMETIMES);
 		outer.getChildren().addAll(nameLabel, descriptionLabel, authorsLabel, exceptionLabel, tabPane);
 		return outer;
 	}
 	
-	private void loadPart(ObservableValue<? extends PartDescriptor> observable, PartDescriptor oldValue, PartDescriptor part) {
+	private void loadPart() {
+		PartDescriptor part = partProperty.get();
 		if (part == null) {
 			nameLabel.setText(null);
 			descriptionLabel.setText(null);
@@ -74,11 +81,11 @@ public class PartDisplay {
 			exceptionLabel.setText(null);
 			scriptEditor.load(null);
 		} else {
-			nameLabel.setText(part.getName());
+			nameLabel.setText(partProperty.getName());
 			descriptionLabel.setText(part.getDescription());
 			authorsLabel.setText(part.getAuthors().stream().collect(Collectors.joining(", ")));
 			if (part.getException() != null) {				
-				exceptionLabel.setText(part.getException().toString());
+				exceptionLabel.setText(ExceptionUtils.getStackTrace(part.getException()));
 			} else {
 				exceptionLabel.setText(null);
 			}
@@ -101,6 +108,7 @@ public class PartDisplay {
 				parameter.setValidation(validator);
 				parameterGrid.add(Style.createLabel(this, "parameterLabel_" + row, parameter.getName()), 0, row);
 				parameterGrid.add(parameter.getInputControl(), 1, row);
+				parameter.loadDefaultValue();
 				row++;
 			}
 			
@@ -112,7 +120,7 @@ public class PartDisplay {
 			execute.disableProperty().bind(validator.containsErrorsProperty());
 			
 		} catch (Exception e) {
-			exceptionLabel.setText(e.toString());
+			exceptionLabel.setText(ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
