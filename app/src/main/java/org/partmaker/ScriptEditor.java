@@ -17,9 +17,9 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -95,7 +95,6 @@ public class ScriptEditor {
 		
 		toolbar = Style.createToolbar(this, "toolbar");
 		Button saveButton = Style.createButton(this, "save", "Save", "fth-save");
-		saveButton.textProperty().bind(Bindings.when(dirty).then("Save *").otherwise("Save"));
 		saveButton.disableProperty().bind(fileProperty.isNull());
 		saveButton.setOnAction(this::save);
 		saveButton.sceneProperty().addListener((observable, oldValue, newValue) -> {
@@ -128,6 +127,10 @@ public class ScriptEditor {
         VBox.setVgrow(codeArea, Priority.ALWAYS);
         
         outer.getChildren().addAll(toolbar, codeArea);
+	}
+	
+	public ObservableBooleanValue dirtyProperty() {
+		return dirty;
 	}
 	
 	public void load(File file) {

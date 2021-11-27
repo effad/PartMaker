@@ -13,6 +13,7 @@ import com.jsevy.jdxf.DXFDocument;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyShell;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -57,10 +58,9 @@ public class PartDisplay {
 	}
 	
 	public Region createPresentation() {
-		tabPane.getTabs().addAll(
-			new Tab("Execute", parameterGrid), 
-			new Tab("Source", scriptEditor.getEditor())
-		);
+		Tab sourceTab = new Tab("Source", scriptEditor.getEditor());
+		sourceTab.textProperty().bind(Bindings.when(scriptEditor.dirtyProperty()).then("Source *").otherwise("Source"));
+		tabPane.getTabs().addAll(new Tab("Execute", parameterGrid), sourceTab); 
 		VBox.setVgrow(tabPane, Priority.ALWAYS);
 		outer.getChildren().addAll(nameLabel, descriptionLabel, authorsLabel, exceptionLabel, tabPane);
 		return outer;
