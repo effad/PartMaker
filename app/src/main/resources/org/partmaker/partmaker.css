@@ -8,6 +8,54 @@
 	-fx-font-size: 14;
 }
 
-.org.partmaker.PartDisplay {
-	-fx-font-size: 40;
+.PartDisplay {
+	-fx-font-size: 16;
+}
+
+.PartDisplay#outer {
+	-fx-spacing: 5;	
+}
+
+.PartDisplay#parameters {
+	-fx-hgap: 5;
+	-fx-vgap: 5;
+	-fx-padding: 10;
+}
+
+.keyword {
+    -fx-fill: purple;
+    -fx-font-weight: bold;
+}
+.pmtype{
+    -fx-fill: indigo;
+}
+.pmvariable{
+    -fx-fill: purple;
+    -fx-font-style: italic;
+}
+.semicolon {
+    -fx-font-weight: bold;
+}
+.paren {
+    -fx-fill: firebrick;
+    -fx-font-weight: bold;
+}
+.bracket {
+    -fx-fill: darkgreen;
+    -fx-font-weight: bold;
+}
+.brace {
+    -fx-fill: teal;
+    -fx-font-weight: bold;
+}
+.string {
+    -fx-fill: blue;
+}
+
+.comment {
+	-fx-fill: cadetblue;
+}
+
+.paragraph-box:has-caret {
+    -fx-background-color: #f2f9fc;
 }

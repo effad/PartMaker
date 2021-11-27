@@ -3,6 +3,8 @@ package org.partmaker.scriptparams;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javafx.scene.control.TextField;
+
 /** RealParameterTest tests RealParameter.
  * @author Robert Lichtenberger
  */
@@ -21,13 +23,22 @@ public class RealParameterTest {
 
 	@Test
 	public void testMin() {
-		RealParameter i = new RealParameter("ElvenRings").min(3.0);
-		Assertions.assertEquals(i.getMin(), 3.0);		
+		RealParameter r = new RealParameter("ElvenRings").min(3.0);
+		Assertions.assertEquals(r.getMin(), 3.0);		
 	}
 	
 	@Test
 	public void testMax() {
-		RealParameter i = new RealParameter("DwarvenRings").max(7.0);
-		Assertions.assertEquals(i.getMax(), 7.0);		
+		RealParameter r = new RealParameter("DwarvenRings").max(7.0);
+		Assertions.assertEquals(r.getMax(), 7.0);		
 	}	
+
+	@Test
+	public void testInputWidgetAndValue() {
+		RealParameter r = new RealParameter("Butter");
+		Assertions.assertTrue(r.getInputControl() instanceof TextField);
+		TextField input = (TextField) r.getInputControl();
+		input.setText("12.345");
+		Assertions.assertEquals(r.getValue(), 12.345);
+	}
 }

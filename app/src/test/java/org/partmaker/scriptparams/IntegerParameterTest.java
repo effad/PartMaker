@@ -2,11 +2,17 @@ package org.partmaker.scriptparams;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.partmaker.TestBase;
+import org.testfx.framework.junit5.ApplicationExtension;
+
+import javafx.scene.control.TextField;
 
 /** IntegerParameterTest tests IntegerParameter.
  * @author Robert Lichtenberger
  */
-public class IntegerParameterTest {
+@ExtendWith(ApplicationExtension.class)
+public class IntegerParameterTest extends TestBase {
 	@Test
 	public void testName() {
 		IntegerParameter i = new IntegerParameter("Radagast");
@@ -30,4 +36,13 @@ public class IntegerParameterTest {
 		IntegerParameter i = new IntegerParameter("FellowshipMembers").max(9);
 		Assertions.assertEquals(i.getMax(), 9);		
 	}	
+	
+	@Test
+	public void testInputWidgetAndValue() {
+		IntegerParameter i = new IntegerParameter("Orcs");
+		Assertions.assertTrue(i.getInputControl() instanceof TextField);
+		TextField input = (TextField) i.getInputControl();
+		input.setText("12345");
+		Assertions.assertEquals(i.getValue(), 12345L);
+	}
 }

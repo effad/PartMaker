@@ -7,14 +7,14 @@ import java.util.List;
  * @author Robert Lichtenberger
  */
 public class Parameters {
-	private List<ParameterBase<?>> parameters = new ArrayList<>();
+	private List<ParameterBase<?, ?>> parameters = new ArrayList<>();
 	
-	public <T extends ParameterBase<?>> T add(T parameter) {
+	public <T extends ParameterBase<?, ?>> T add(T parameter) {
 		parameters.add(parameter);
 		return parameter;
 	}
 	
-	public List<ParameterBase<?>> getParameters() {
+	public List<ParameterBase<?, ?>> getParameters() {
 		return parameters;
 	}
 }

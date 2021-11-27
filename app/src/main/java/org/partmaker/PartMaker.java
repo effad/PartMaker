@@ -1,5 +1,8 @@
 package org.partmaker;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javafx.application.Application;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -16,6 +19,8 @@ public class PartMaker extends Application {
 	private LibraryChooser libraryChooser = new LibraryChooser();
 	private LibraryList libraryList = new LibraryList();
 	private PartDisplay partDisplay = new PartDisplay();
+	
+	public static final ExecutorService higlightingExecutor = Executors.newSingleThreadExecutor();
 
 	@Override
 	public void start(Stage stage) {
@@ -26,6 +31,12 @@ public class PartMaker extends Application {
 		stage.setScene(scene);
 		scene.getStylesheets().add(getClass().getResource("partmaker.css").toExternalForm());		
 		stage.show();
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		super.stop();
+		higlightingExecutor.shutdown();
 	}
 
 	private Region createPresentation() {
