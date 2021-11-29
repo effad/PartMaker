@@ -14,11 +14,9 @@ import com.jsevy.jdxf.DXFDocument;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyShell;
-import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -30,6 +28,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import net.synedra.validatorfx.TooltipWrapper;
 import net.synedra.validatorfx.Validator;
 
 /** PartDisplay displays a single PartDescriptor and allows to execute it's script.
@@ -113,11 +112,15 @@ public class PartDisplay {
 			}
 			
 			Button execute = Style.createButton(this, "execute", "Run", "fth-play");
-			parameterGrid.add(execute, 0, row, 2, 1);
 			execute.setOnAction(e -> {
 				executeScript(part, parameters);
 			});
-			execute.disableProperty().bind(validator.containsErrorsProperty());
+			TooltipWrapper<Button> executeWrapper = new TooltipWrapper<>(
+				execute, 
+				validator.containsErrorsProperty(), 
+				Bindings.concat("Cannot run script:\n", validator.createStringBinding())
+			);
+			parameterGrid.add(executeWrapper, 0, row);
 			
 		} catch (Exception e) {
 			exceptionLabel.setText(ExceptionUtils.getStackTrace(e));

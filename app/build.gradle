@@ -44,7 +44,7 @@ dependencies {
     implementation 'org.codehaus.groovy:groovy:3.0.7'
     
     // ValidatorFX is used for parameter validation
-    implementation 'net.synedra:validatorfx:0.1.14'
+    implementation 'net.synedra:validatorfx:0.2.1'
     
     // RichTextFX is used for source code editing
     implementation 'org.fxmisc.richtext:richtextfx:0.10.7'
