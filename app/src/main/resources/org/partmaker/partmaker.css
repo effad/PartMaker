@@ -8,6 +8,8 @@
 	-fx-font-size: 14;
 }
 
+* { -fx-tab-size: 4; }
+
 .PartDisplay {
 	-fx-font-size: 16;
 }

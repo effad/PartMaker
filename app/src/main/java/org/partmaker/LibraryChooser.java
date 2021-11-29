@@ -35,7 +35,7 @@ public class LibraryChooser {
 		HBox chooser = new HBox();
 		Label label = new Label();		
 		label.textProperty().bind(labelBinding);
-		Button button = new Button("...");
+		Button button = Style.createButton(this, "directory-buttton", "Open", "fth-book-open");
 		button.setOnAction(this::buttonClicked);
 		chooser.getChildren().addAll(label, button);
 		chooser.setAlignment(Pos.BASELINE_RIGHT);

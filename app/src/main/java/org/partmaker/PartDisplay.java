@@ -85,11 +85,13 @@ public class PartDisplay {
 			authorsLabel.setText(part.getAuthors().stream().collect(Collectors.joining(", ")));
 			if (part.getException() != null) {				
 				exceptionLabel.setText(ExceptionUtils.getStackTrace(part.getException()));
+				scriptEditor.load(null);
+				parameterGrid.getChildren().clear();
 			} else {
 				exceptionLabel.setText(null);
+				scriptEditor.load(part.getScriptFile());
+				doLoadPart(part);
 			}
-			scriptEditor.load(part.getScriptFile());
-			doLoadPart(part);
 		}
 	}
 

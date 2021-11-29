@@ -1,0 +1,8 @@
+{
+	"name": "Circle",
+	"description": "Creates a simple circle",
+	"authors": [ "r.lichtenberger@gmail.com" ],
+	"scriptFile": "circle.groovy"
+}
+
+	

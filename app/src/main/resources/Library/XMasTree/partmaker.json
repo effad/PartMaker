@@ -1,0 +1,8 @@
+{
+	"name": "XMasTree",
+	"description": "Create a Christmas Tree",
+	"authors": [ "r.lichtenberger@gmail.com" ],
+	"scriptFile": "xmastree.groovy"
+}
+
+	

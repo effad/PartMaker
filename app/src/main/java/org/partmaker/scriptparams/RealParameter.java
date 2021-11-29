@@ -54,11 +54,15 @@ public class RealParameter extends ParameterBase<RealParameter, Double> {
 		return value;
 	}
 	
+	public RealParameter defaultValue(Number defaultValue) {
+		return defaultValue(defaultValue == null ? null : defaultValue.doubleValue());
+	}
+	
 	@Override
 	public void loadValue(Double value) {
 		inputControl.setText("" + value);
 	}
-
+	
 	private Double convertToDouble() {
 		Double value;
 		value = Double.parseDouble(inputControl.getText());
