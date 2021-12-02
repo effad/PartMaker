@@ -1,7 +1,10 @@
 package org.partmaker;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.LogManager;
 
 import javafx.application.Application;
 import javafx.geometry.Orientation;
@@ -21,6 +24,15 @@ public class PartMaker extends Application {
 	private PartDisplay partDisplay = new PartDisplay();
 	
 	public static final ExecutorService higlightingExecutor = Executors.newSingleThreadExecutor();
+	
+	static {
+	      InputStream stream = PartMaker.class.getResourceAsStream("/org/partmaker/logging.properties");
+	      try {
+	          LogManager.getLogManager().readConfiguration(stream);
+	      } catch (IOException e) {
+	          e.printStackTrace();
+	      }
+	}
 
 	@Override
 	public void start(Stage stage) {
@@ -39,11 +51,17 @@ public class PartMaker extends Application {
 		higlightingExecutor.shutdown();
 	}
 
+
 	private Region createPresentation() {
+		SplitPane upper = new SplitPane();
+		upper.setOrientation(Orientation.HORIZONTAL);
+		upper.getItems().addAll(createLibrary(), createPreview());
+		upper.setDividerPositions(0.3, 0.7);
+		
 		SplitPane outer = new SplitPane();
-		outer.setOrientation(Orientation.HORIZONTAL);
-		outer.getItems().addAll(createLibrary(), createPreview());
-		outer.setDividerPositions(0.3, 0.7);
+		outer.setOrientation(Orientation.VERTICAL);
+		outer.getItems().addAll(upper, LogOutput.getInstance().getPresentation());
+		outer.setDividerPositions(0.7, 0.3);
 		return outer;
 	}
 

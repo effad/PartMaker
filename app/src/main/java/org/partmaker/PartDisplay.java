@@ -3,9 +3,10 @@ package org.partmaker;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Constructor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.partmaker.scriptparams.ParameterBase;
 import org.partmaker.scriptparams.Parameters;
 
@@ -21,7 +22,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -37,13 +37,14 @@ import net.synedra.validatorfx.Validator;
  */
 public class PartDisplay {
 	
+	private final static Logger LOGGER = Logger.getLogger(PartDisplay.class.getName());
+	
 	private ObjectProperty<PartDescriptor> partProperty = new SimpleObjectProperty<>(null);
 	
 	private VBox outer = Style.createVBox(this, "outer");
 	private Label nameLabel = Style.createLabel(this, "name");
 	private Label descriptionLabel = Style.createLabel(this, "description");
 	private Label authorsLabel = Style.createLabel(this, "authors");
-	private TextArea exceptionLabel = Style.createTextArea(this, "exception");
 	private TabPane tabPane = Style.createTabPane(this, "tab");
 	private GridPane parameterGrid = Style.createGridPane(this, "parameters");
 
@@ -65,9 +66,8 @@ public class PartDisplay {
 		sourceTab.textProperty().bind(Bindings.when(scriptEditor.dirtyProperty()).then("Source *").otherwise("Source"));
 		tabPane.getTabs().addAll(new Tab("Execute", parameterGrid), sourceTab);
 		VBox.setVgrow(tabPane, Priority.ALWAYS);
-		exceptionLabel.setEditable(false);
 		VBox.setVgrow(tabPane, Priority.SOMETIMES);
-		outer.getChildren().addAll(nameLabel, descriptionLabel, authorsLabel, exceptionLabel, tabPane);
+		outer.getChildren().addAll(nameLabel, descriptionLabel, authorsLabel, tabPane);
 		return outer;
 	}
 	
@@ -77,18 +77,16 @@ public class PartDisplay {
 			nameLabel.setText(null);
 			descriptionLabel.setText(null);
 			authorsLabel.setText(null);
-			exceptionLabel.setText(null);
 			scriptEditor.load(null);
 		} else {
 			nameLabel.setText(partProperty.getName());
 			descriptionLabel.setText(part.getDescription());
 			authorsLabel.setText(part.getAuthors().stream().collect(Collectors.joining(", ")));
-			if (part.getException() != null) {				
-				exceptionLabel.setText(ExceptionUtils.getStackTrace(part.getException()));
+			if (part.getException() != null) {	
+				LOGGER.log(Level.WARNING, "Invalid part definition", part.getException());
 				scriptEditor.load(null);
 				parameterGrid.getChildren().clear();
 			} else {
-				exceptionLabel.setText(null);
 				scriptEditor.load(part.getScriptFile());
 				doLoadPart(part);
 			}
@@ -125,7 +123,7 @@ public class PartDisplay {
 			parameterGrid.add(executeWrapper, 0, row);
 			
 		} catch (Exception e) {
-			exceptionLabel.setText(ExceptionUtils.getStackTrace(e));
+			LOGGER.log(Level.WARNING, "Could not load part", part.getException());
 		}
 	}
 	
@@ -145,7 +143,7 @@ public class PartDisplay {
 				}
 			}
 		} catch (Exception e) {
-			exceptionLabel.setText(e.toString());
+			LOGGER.log(Level.WARNING, "Error in script", e);
 		}
 	}
 

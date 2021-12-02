@@ -24,6 +24,10 @@
 	-fx-padding: 10;
 }
 
+.LogOutput {
+	-fx-font-size: 10;
+}
+
 .keyword {
     -fx-fill: purple;
     -fx-font-weight: bold;
