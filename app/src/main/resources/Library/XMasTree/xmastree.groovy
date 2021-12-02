@@ -31,12 +31,22 @@ while (size - 2*shrink > thickness) {
 	y0 = y;
 	y1 = y + height / 2.0;
 	y2 = y + height;
-	graphics.drawPolygon(
-		new double[] { x0, x2, x2, x3, x3, x5, x4, x1},
-		new double[] { y0, y0, y1, y1, y0, y0, y2, y2},
-		8
-	);
+	if (size - 4 * shrink > thickness) {
+		graphics.drawPolygon(
+			new double[] { x0, x2, x2, x3, x3, x5, x4, x1},
+			new double[] { y0, y0, y1, y1, y0, y0, y2, y2},
+			8
+		);
+	} else {
+		double middle = (x2 + x3) / 2.0;
+		graphics.drawPolygon(
+			new double[] { x0, x2, x2, x3, x3, x5, middle },
+			new double[] { y0, y0, y1, y1, y0, y0, y0 + middle * height / shrink},
+			7
+		);
+	}
+
+
 	y = y2 + distance;
 	size -= 2 * shrink;
-}
-
+} 

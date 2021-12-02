@@ -79,7 +79,7 @@ public class PartDisplay {
 			authorsLabel.setText(null);
 			scriptEditor.load(null);
 		} else {
-			nameLabel.setText(partProperty.getName());
+			nameLabel.setText(part.getName());
 			descriptionLabel.setText(part.getDescription());
 			authorsLabel.setText(part.getAuthors().stream().collect(Collectors.joining(", ")));
 			if (part.getException() != null) {	
@@ -132,7 +132,7 @@ public class PartDisplay {
 			File outFile = fileChooser.showSaveDialog(outer.getScene().getWindow());
 			if (outFile != null) {
 				fileChooser.setInitialDirectory(outFile.getParentFile());
-				Binding binding = createBinding(parameters);
+				Binding binding = createBinding(part, parameters);
 				DXFDocument dxfDocument = new DXFDocument(part.getName());
 				binding.setProperty("document", dxfDocument);
 				binding.setProperty("graphics", dxfDocument.getGraphics());
@@ -147,8 +147,9 @@ public class PartDisplay {
 		}
 	}
 
-	private Binding createBinding(Parameters parameters) {
+	private Binding createBinding(PartDescriptor part, Parameters parameters) {
 		Binding binding = new Binding();
+		binding.setProperty("log", Logger.getLogger(part.getName()));
 		for (ParameterBase<?, ?> parameter : parameters.getParameters()) {
 			binding.setProperty(parameter.getName(), parameter.getValue());
 		}
