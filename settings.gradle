@@ -8,4 +8,3 @@
  */
 
 rootProject.name = 'PartMaker'
-include('app')

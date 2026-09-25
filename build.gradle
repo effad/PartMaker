@@ -1,25 +1,59 @@
 plugins {
-	// Apply the java-library plugin to add support for Java Library
-	id 'java'
-	id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 version = '0.1.1'
 
 repositories {
-	// Use jcenter for resolving dependencies.
-	// You can declare any Maven/Ivy/file repository here.
-	jcenter()
+    mavenCentral()
 }
 
 dependencies {
-	testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.1'
-	testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
-    testCompile "org.testfx:openjfx-monocle:jdk-12.0.1+2" 
 
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
-	
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    // Testing dependencies - aligned JUnit 5 version + mandatory launcher
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2' // Fixes the Gradle 9 error
+
+    testImplementation 'org.testfx:testfx-junit5:4.0.17'
+    testImplementation 'org.testfx:openjfx-monocle:jdk-12.0.1+2'
+    
+    // Utility libraries
+    implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'commons-io:commons-io:2.8.0'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    
+    // Jackson is used to deserialize .json file into POJOs 
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.2'
+    
+    // Groovy is used for scripts that generate parts    
+    implementation 'org.codehaus.groovy:groovy:3.0.7'
+    
+    // ValidatorFX is used for parameter validation
+    implementation 'net.synedra:validatorfx:1.0.0'
+    
+    // RichTextFX is used for source code editing
+    implementation 'org.fxmisc.richtext:richtextfx:0.11.7'
+    
+    // Ikonli provides nice icons
+    implementation 'org.kordamp.ikonli:ikonli-javafx:12.2.0'
+    implementation 'org.kordamp.ikonli:ikonli-feather-pack:12.2.0'
+    
+    // Local JDXF jar
+    implementation fileTree(include: ['*.jar'], dir: 'libs')    
+}
+javafx {
+    version = "25"
+    modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.base' ]
+}
+
+// Points to your main class for running via ./gradlew run
+application {
+    mainClass = 'org.partmaker.PartMaker' // Replace with your actual Main class
 }
 
 test {
@@ -27,18 +61,16 @@ test {
     jvmArgs '-Djava.awt.headless=true', '-Dtestfx.robot=glass', '-Dtestfx.headless=true', '-Dprism.order=sw'
 }
 
-
 jar {
-	manifest {
-		attributes('Implementation-Title': project.name,
-				   'Implementation-Version': project.version)
-	}
+    manifest {
+        attributes(
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version
+        )
+    }
 }
 
-javafx {
-		version = "15"
-		modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.base' ]
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
-
-sourceCompatibility = 11
-targetCompatibility = 11
