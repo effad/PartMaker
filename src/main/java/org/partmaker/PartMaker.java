@@ -41,6 +41,8 @@ public class PartMaker extends Application {
 		libraryList.directoryProperty().bind(libraryChooser.directoryProperty());
 		partDisplay.partProperty().bind(libraryList.partProperty());
 		stage.setScene(scene);
+		stage.setTitle("PartMaker");
+		stage.toFront();
 		scene.getStylesheets().add(getClass().getResource("partmaker.css").toExternalForm());		
 		stage.show();
 	}

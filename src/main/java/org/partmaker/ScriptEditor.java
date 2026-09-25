@@ -98,7 +98,7 @@ public class ScriptEditor {
 		Button saveButton = Style.createButton(this, "save", "Save", "fth-save");
 		saveButton.disableProperty().bind(fileProperty.isNull());
 		saveButton.setOnAction(this::save);
-		saveButton.sceneProperty().addListener((observable, oldValue, newValue) -> {
+		saveButton.sceneProperty().addListener((_, _, newValue) -> {
 			if (newValue != null) {
 				newValue.getAccelerators().put(
 					new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
@@ -124,7 +124,7 @@ public class ScriptEditor {
                 }
             })
             .subscribe(this::applyHighlighting);
-        codeArea.plainTextChanges().subscribe(c -> dirty.set(true));
+        codeArea.plainTextChanges().subscribe(_ -> dirty.set(true));
         VBox.setVgrow(codeArea, Priority.ALWAYS);
         
         outer.getChildren().addAll(toolbar, codeArea);

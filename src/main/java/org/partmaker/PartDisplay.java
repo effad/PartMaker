@@ -52,8 +52,8 @@ public class PartDisplay {
 	private FileChooser fileChooser = new FileChooser();
 	
 	PartDisplay() {
-		partProperty().addListener((observable, oldValue, newValue) -> loadPart());
-		scriptEditor.savedProperty().addListener((observable, oldValue, newValue) -> loadPart()); 
+		partProperty().addListener((_, _, _) -> loadPart());
+		scriptEditor.savedProperty().addListener((_, _, _) -> loadPart()); 
 		fileChooser.getExtensionFilters().setAll(new ExtensionFilter("DXF Files", "*.dxf"));
 	}
 	
@@ -112,7 +112,7 @@ public class PartDisplay {
 			}
 			
 			Button execute = Style.createButton(this, "execute", "Run", "fth-play");
-			execute.setOnAction(e -> {
+			execute.setOnAction(_ -> {
 				executeScript(part, parameters);
 			});
 			TooltipWrapper<Button> executeWrapper = new TooltipWrapper<>(

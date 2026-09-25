@@ -34,7 +34,7 @@ public class LibraryList {
 	
 	public Region createPresentation() {
 		VBox.setVgrow(listView, Priority.ALWAYS);
-		listView.setCellFactory(lv -> new PartCell());
+		listView.setCellFactory(_ -> new PartCell());
 		return listView;
 	}
 	
