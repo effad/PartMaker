@@ -1,0 +1,8 @@
+{
+	"name": "Finger Joint Box",
+	"description": "Creates bottom, top, front, back, left and right sides of a box with finger joints",
+	"authors": [ "r.lichtenberger@gmail.com" ],
+	"scriptFile": "fingerjointbox.groovy"
+}
+
+	

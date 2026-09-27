@@ -123,7 +123,7 @@ public class PartDisplay {
 			parameterGrid.add(executeWrapper, 0, row);
 			
 		} catch (Exception e) {
-			LOGGER.log(Level.WARNING, "Could not load part", part.getException());
+			LOGGER.log(Level.WARNING, "Could not load part '" + part.getName() + "'", e);
 		}
 	}
 	

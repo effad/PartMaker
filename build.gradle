@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'eclipse'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
 }
@@ -44,7 +45,22 @@ dependencies {
     implementation 'org.kordamp.ikonli:ikonli-feather-pack:12.2.0'
     
     // Local JDXF jar
-    implementation fileTree(include: ['*.jar'], dir: 'libs')    
+	implementation files('libs/jdxf.jar')     
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged { classpath ->
+                classpath.entries.each { entry ->
+                    if (entry.kind == 'lib' && entry.path.contains('jdxf')) {
+                        // Use fileReference(...) to create the required FileReference object
+                        entry.sourcePath = fileReference(file('libs/jdxf_src_v2.1.1.zip'))
+                    }
+                }
+            }
+        }
+    }
 }
 javafx {
     version = "25"
