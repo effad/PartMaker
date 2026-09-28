@@ -7,7 +7,9 @@ void defineParameters(Parameters parameters) {
 	parameters.add(new IntegerParameter("width")).min(5).max(2000).required().defaultValue(100);
 	parameters.add(new IntegerParameter("width_fingers")).min(1).max(100).required().defaultValue(2);
 	parameters.add(new IntegerParameter("height")).min(5).max(2000).required().defaultValue(50);
+	parameters.add(new IntegerParameter("height_fingers")).min(1).max(100).required().defaultValue(1);
 	parameters.add(new IntegerParameter("depth")).min(5).max(2000).required().defaultValue(200);
+	parameters.add(new IntegerParameter("depth_fingers")).min(1).max(100).required().defaultValue(5);
 	parameters.add(new IntegerParameter("material")).min(1).max(200).required().defaultValue(5);
 	parameters.add(new IntegerParameter("gap")).min(1).max(100).required().defaultValue(10);
 }
@@ -18,7 +20,7 @@ Path2D.Double createRidge(long nrFingers, long ridgeLength) {
 	double sw = outerLength / sections;
 	Path2D.Double ridge = new Path2D.Double();
 	double xzero = 0.0;
-	for (int i = 0; i < width_fingers; i++) {
+	for (int i = 0; i < nrFingers; i++) {
 		ridge.moveTo(xzero, 0d)
 		ridge.lineTo(xzero + sw, 0d)
 		ridge.lineTo(xzero + sw, material)
@@ -31,19 +33,28 @@ Path2D.Double createRidge(long nrFingers, long ridgeLength) {
 	return ridge;
 }
 
-int sections = width_fingers * 2 + 1;
-double outer_width = width + 2 * material;
-double outer_depth = depth + 2 * material;
-double sw = outer_width / sections;
 
 // bottom
 topRidge = createRidge(width_fingers, width);
 graphics.draw(topRidge);
 AffineTransform tx = new AffineTransform();
 tx.scale(1.0, -1.0);
-tx.translate(0, -outer_depth);
+tx.translate(0, -(depth + 2 * material));
 bottomRidge = tx.createTransformedShape(topRidge);
 graphics.draw(bottomRidge);
+
+
+tx = new AffineTransform();
+tx.quadrantRotate(1);
+tx.scale(1.0, -1.0);
+leftRidge = tx.createTransformedShape(createRidge(depth_fingers, depth));
+graphics.draw(leftRidge);
+
+tx = new AffineTransform();
+tx.scale(-1.0, 1.0);
+tx.translate(-(width + 2 * material), 0);
+rightRidge = tx.createTransformedShape(leftRidge);
+graphics.draw(rightRidge);
 
 log.log(Level.INFO, "Done.");
 
