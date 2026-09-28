@@ -4,6 +4,8 @@ import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 
 /** Logger provides a simple text output facility for log messages.
@@ -24,6 +26,10 @@ public class LogOutput {
 	
 	private LogOutput() {
 		output.setEditable(false);
+		MenuItem clear = new MenuItem("Clear log");
+		clear.setOnAction(_ -> output.clear());
+		ContextMenu cm = new ContextMenu(clear);
+		output.setContextMenu(cm);
 	}
 	
 	public Node getPresentation() {

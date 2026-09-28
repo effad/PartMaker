@@ -1,5 +1,7 @@
 import org.partmaker.scriptparams.*;
 import java.awt.geom.Path2D;
+import java.awt.geom.AffineTransform;
+import java.util.logging.Level;
 
 void defineParameters(Parameters parameters) {
 	parameters.add(new IntegerParameter("width")).min(5).max(2000).required().defaultValue(100);
@@ -10,24 +12,38 @@ void defineParameters(Parameters parameters) {
 	parameters.add(new IntegerParameter("gap")).min(1).max(100).required().defaultValue(10);
 }
 
+Path2D.Double createRidge(long nrFingers, long ridgeLength) {
+	int sections = nrFingers * 2 + 1;
+	double outerLength = ridgeLength + 2.0 * material;
+	double sw = outerLength / sections;
+	Path2D.Double ridge = new Path2D.Double();
+	double xzero = 0.0;
+	for (int i = 0; i < width_fingers; i++) {
+		ridge.moveTo(xzero, 0d)
+		ridge.lineTo(xzero + sw, 0d)
+		ridge.lineTo(xzero + sw, material)
+		ridge.lineTo(xzero + 2 * sw, material)
+		ridge.lineTo(xzero + 2 * sw, 0d)
+		xzero += sw * 2;
+	}
+	ridge.lineTo(xzero, 0d)
+	ridge.lineTo(xzero + sw, 0d)	
+	return ridge;
+}
+
 int sections = width_fingers * 2 + 1;
 double outer_width = width + 2 * material;
+double outer_depth = depth + 2 * material;
 double sw = outer_width / sections;
 
-poly = new Path2D.Double();
-double xzero;
-for (int i = 0; i < width_fingers; i++) {
-	xzero += sw * 2;
-	poly.moveTo(xzero, 0d)
-	poly.lineTo(xzero + sw, 0d)
-	poly.lineTo(xzero + sw, material)
-	poly.lineTo(xzero + 2 * sw, material)
-	poly.lineTo(xzero + 2 * sw, 0d)
-}
-xzero += sw * 2;
-poly.lineTo(xzero, 0d)
-poly.lineTo(xzero + sw, 0d)
-
 // bottom
-graphics.draw(poly);
+topRidge = createRidge(width_fingers, width);
+graphics.draw(topRidge);
+AffineTransform tx = new AffineTransform();
+tx.scale(1.0, -1.0);
+tx.translate(0, -outer_depth);
+bottomRidge = tx.createTransformedShape(topRidge);
+graphics.draw(bottomRidge);
+
+log.log(Level.INFO, "Done.");
 

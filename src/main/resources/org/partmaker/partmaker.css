@@ -5,13 +5,13 @@
 
 .root {
 	-fx-font-family: 'Roboto';
-	-fx-font-size: 14;
+	-fx-font-size: 1.4em;
 }
 
 * { -fx-tab-size: 4; }
 
 .PartDisplay {
-	-fx-font-size: 16;
+	-fx-font-size: 1.4em;
 }
 
 .PartDisplay#outer {
@@ -25,7 +25,7 @@
 }
 
 .LogOutput {
-	-fx-font-size: 10;
+	-fx-font-size: 1.2em;
 }
 
 .keyword {
